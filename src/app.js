@@ -26,6 +26,8 @@ const giftCardRoutes = require('./route/GiftCards/GiftCardRoute');
 const notificationRoutes = require('./route/Notifications/Notifications');
 const homecategoryRoutes = require('./route/HomeCategory/HomeCategory');
 
+
+
 //dotenv
 dotenv.config();
 const app = express();
@@ -50,8 +52,8 @@ app.use(passport.session());
 //cors
 app.use(
 	cors({
-		origin: ['https://admin.hhkgifts.com','https://hhkgifts.com'],
-        // origin:'http://localhost:3000',
+		// origin: ['https://admin.hhkgifts.com','https://hhkgifts.com'],
+        origin:'http://localhost:3000',
 		methods: "GET,POST,PUT,DELETE",
 		credentials: true,
 	})
@@ -77,5 +79,7 @@ app.use("/api",giftCardRoutes);
 app.use("/api",homecategoryRoutes);
 app.use("/api",notificationRoutes);
 app.use("/auth",authRoutes);
+
+
 
 module.exports = app;

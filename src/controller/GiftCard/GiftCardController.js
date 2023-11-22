@@ -21,11 +21,13 @@ exports.adminCreateGiftCardCtrl = async (req, res, imageUrls) => {
             productImages = null
         }
 
+        const slugValue = typeof name === 'string' ? slug(name) : '';
+
         if (productImages) {
 
             GiftCard.create({
                 name,
-                slug: slugify(name),
+                slug: slugValue,
                 description,
                 price,
                 quantity,
@@ -40,7 +42,7 @@ exports.adminCreateGiftCardCtrl = async (req, res, imageUrls) => {
             }).then((giftcard) => {
                 return res.status(200).json({
                     giftcard
-                })
+                });
             })
                 .catch(err => {
                     return res.status(500).json({
@@ -51,7 +53,7 @@ exports.adminCreateGiftCardCtrl = async (req, res, imageUrls) => {
         } else {
             GiftCard.create({
                 name,
-                slug: slugify(name),
+                slug: slugValue,
                 description,
                 price,
                 quantity,

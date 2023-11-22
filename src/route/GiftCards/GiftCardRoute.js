@@ -90,5 +90,6 @@ router.post('/admin-update-giftcard', upload.array('images'), (req, res) => {
 router.post('/admin-get-giftcard',adminGetGiftCardCtrl);
 router.post('/admin-delete-giftcard',deleteGiftCardCtrl);
 router.get('/get-all-giftcard',getAllGiftCardCtrl);
+router.post('/admin-create-giftcard' , adminCreateGiftCardCtrl)
 
 module.exports = router; 

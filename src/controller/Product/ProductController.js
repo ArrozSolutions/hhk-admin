@@ -1,5 +1,6 @@
 const { default: slugify } = require("slugify");
 const ProductModel = require("../../models/Product/ProductModel");
+const mongoose = require('mongoose');
 
 
 exports.getNewProductsCtrl = async (req, res) => {
@@ -15,6 +16,44 @@ exports.getNewProductsCtrl = async (req, res) => {
         })
     }
 }
+
+exports.editProductCtrl = async (req, res) => {
+    try {
+        const { pid } = req.params;
+        const updateData = req.body;
+
+        // Check if the provided ID is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(pid)) {
+            return res.status(400).json({
+                message: "Invalid product ID format"
+            });
+        }
+
+        const updatedProduct = await ProductModel.findByIdAndUpdate(
+            pid,
+            { $set: updateData },
+            { new: true }
+        ).populate('category');
+
+        if (!updatedProduct) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+
+        return res.status(200).json({
+            product: updatedProduct,
+            message: "Product updated successfully"
+        });
+    } catch (error) {
+        console.error("Error in editProductCtrl:", error);
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+};
+
+
 
 exports.getTrendingProductsCtrl = async (req, res) => {
     try {
@@ -34,37 +73,44 @@ exports.getTrendingProductsCtrl = async (req, res) => {
 exports.getProductCtrl = async (req, res) => {
     try {
         const perPage = 8;
-        const page = req.params.page;
+        const page = parseInt(req.params.page);
         const sort = req.params.sort;
-        const allproducts = await ProductModel.find({});
-        const totalproducts = allproducts.length;
-        if (sort == "latest") {
-            const products = await ProductModel.find({}).populate('category').limit(perPage * page).sort({ createdAt: -1 });
-            return res.status(200).json({
-                products,
-                totalproducts
-            })
-        } else if (sort == "pricehightolow") {
-            const products = await ProductModel.find({}).populate('category').limit(perPage * page).sort({ price: -1 });
-            return res.status(200).json({
-                products,
-                totalproducts
-            })
-        }
-        else if (sort == "pricelowtohigh") {
-            const products = await ProductModel.find({}).populate('category').limit(perPage * page).sort({ price: 1 });
-            return res.status(200).json({
-                products,
-                totalproducts
-            })
+        const query = {};
+
+        // Pagination logic
+        const skip = perPage * (page - 1);
+
+        // Sorting logic
+        let sortOptions = {};
+        if (sort === "latest") {
+            sortOptions = { createdAt: -1 };
+        } else if (sort === "pricehightolow") {
+            sortOptions = { discountprice: -1 };
+        } else if (sort === "pricelowtohigh") {
+            sortOptions = { discountprice: 1 };
         }
 
+        const products = await ProductModel.find(query)
+            .populate('category')
+            .limit(perPage)
+            .skip(skip)
+            .sort(sortOptions);
+
+        const totalproducts = await ProductModel.countDocuments(query);
+
+        return res.status(200).json({
+            products,
+            totalproducts
+        });
     } catch (error) {
+        console.error("Error in getProductCtrl:", error);
         return res.status(500).json({
-            message: "Internal Server Error" + error
-        })
+            message: "Internal Server Error"
+        });
     }
-}
+};
+
+
 
 exports.singleProductCtrl = async (req, res) => {
 

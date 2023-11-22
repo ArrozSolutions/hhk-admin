@@ -25,7 +25,9 @@ router.get("/google", passport.authenticate("google", ["profile", "email"]));
 router.get(
     "/google/callback",
     passport.authenticate("google", {
-        successRedirect: 'https://hhkgifts.com',
+        // successRedirect: 'https://hhkgifts.com',
+        successRedirect: 'http://localhost:3000/profile',
+
         failureRedirect: "/login/failed",
     })
 );

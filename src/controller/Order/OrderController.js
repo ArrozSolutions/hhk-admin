@@ -4,6 +4,64 @@ const Order = require("../../models/Order/OrderModel");
 const User = require("../../models/User/UserModel");
 const sendEmail = require('../../utils/SendMail');
 
+const getEmailContent = (orderName) => `
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        a {
+            color: red;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img src="../../asset/logo.png" alt="HarshHasthkala Logo" width="150">
+        <h2 style="color: red;">Order Successfully Placed!</h2>
+        <p>Thank you for shopping from HarshHasthkala.</p>
+        <p>Your order with order ID ###, containing items "${orderName}" has been placed successfully.</p>
+        <p>It will be dispatched soon.</p>
+        <p>For any queries, please contact HarshHasthkala via email at <a href="mailto:harshhasthkala@gmail.com">harshhasthkala@gmail.com</a> or via phone at <a href="tel:+917987600654">+91 79876 00654</a>.</p>
+    </div>
+</body>
+
+</html>
+`;
+
 exports.createOrderCtrl = async (req, res) => {
     try {
         var userUpdated = false;
@@ -42,9 +100,9 @@ exports.createOrderCtrl = async (req, res) => {
                         message: "Your Order has been Created!",
                         type:"Order",
                     }).then(async (notificationCreated) => {
-                        await sendEmail(req.body.email, "Order Successfully Placed!", `Thank You for shopping from HarshHasthkala.\n\nYour order with order id ###,\nwith items ${req?.body?.orderName}\nhas been placed successfully.\nIt will be dispatched soon.\nFor any query contact HarshHasthkala via email at harshhasthkala@gmail.com or via number +917987600654.`).then((emailSent) => {
-                            console.log("EMail sent");
-                        })
+                        await sendEmail(req.body.email, "Order Successfully Placed!", getEmailContent(req?.body?.orderName)).then((emailSent) => {
+                            console.log("Email sent");
+                        });
                         return res.status(200).json({
                             message: "Order Created Successfully",
                             userUpdated: false,
@@ -108,9 +166,9 @@ exports.createOrderCtrl = async (req, res) => {
                     message: "Your Order has been Created!",
                     type:"Order",
                 }).then(async (notificationCreated) => {
-                    await sendEmail(req.body.email, "Order Successfully Placed!", `Thank You for shopping from HarshHasthkala.\n\nYour order with order id ###,\nwith items ${req?.body?.orderName}\nhas been placed successfully.\nIt will be dispatched soon.\nFor any query contact HarshHasthkala via email at harshhasthkala@gmail.com or via number +917987600654.`).then((emailSent) => {
-                        console.log("EMail sent");
-                    })
+                    await sendEmail(req.body.email, "Order Successfully Placed!", getEmailContent(req?.body?.orderName)).then((emailSent) => {
+                        console.log("Email sent");
+                    });
                     if (userUpdated) {
                         return res.status(200).json({
                             message: "Order Created Successfully",
@@ -195,9 +253,9 @@ exports.createPersonalizedOrderCtrl = async (req, res, imageUrls, cartdata, uid)
                         message: "Your Order has been Created!",
                         type:"Order",
                     }).then(async (notificationCreated) => {
-                        await sendEmail(req.body.email, "Order Successfully Placed!", `Thank You for shopping from HarshHasthkala.\n\nYour order with order id ###,\nwith items ${req?.body?.orderName}\nhas been placed successfully.\nIt will be dispatched soon.\nFor any query contact HarshHasthkala via email at harshhasthkala@gmail.com or via number +917987600654.`).then((emailSent) => {
-                            console.log("EMail sent");
-                        })
+                        await sendEmail(req.body.email, "Order Successfully Placed!", getEmailContent(req?.body?.orderName)).then((emailSent) => {
+                            console.log("Email sent");
+                        });
                         return res.status(200).json({
                             message: "Order Created Successfully1",
                             userCreated: true,
@@ -265,9 +323,9 @@ exports.createPersonalizedOrderCtrl = async (req, res, imageUrls, cartdata, uid)
                     message: "Your Order has been Created!",
                     type:"Order",
                 }).then(async (notificationCreated) => {
-                    await sendEmail(req.body.email, "Order Successfully Placed!",  `Thank You for shopping from HarshHasthkala.\n\nYour order with order id ###,\nwith items ${req?.body?.orderName}\nhas been placed successfully.\nIt will be dispatched soon.\nFor any query contact HarshHasthkala via email at harshhasthkala@gmail.com or via number +917987600654.`).then((emailSent) => {
-                        console.log("EMail sent");
-                    })
+                    await sendEmail(req.body.email, "Order Successfully Placed!", getEmailContent(req?.body?.orderName)).then((emailSent) => {
+                        console.log("Email sent");
+                    });
                     if (userUpdated) {
                         return res.status(200).json({
                             message: "Order Created Successfully3",

@@ -1,10 +1,11 @@
 const express = require("express");
-const { createProductCtrl, updateProductCtrl, getProductCtrl, singleProductCtrl, productPhotoCtrl, deleteProductCtrl, getNewProductsCtrl, searchProductCtrl, filterProductCtrl, getTrendingProductsCtrl, relatedProductCtrl} = require("../../controller/Product/ProductController");
+const { createProductCtrl,editProductCtrl, updateProductCtrl, getProductCtrl, singleProductCtrl, productPhotoCtrl, deleteProductCtrl, getNewProductsCtrl, searchProductCtrl, filterProductCtrl, getTrendingProductsCtrl, relatedProductCtrl} = require("../../controller/Product/ProductController");
 const router = express.Router();
 const multer = require('multer');
 const shortid = require('shortid');
 const AWS = require('aws-sdk');
 require('dotenv').config();
+
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -15,6 +16,9 @@ const s3 = new AWS.S3({
 const upload = multer({
     storage: multer.memoryStorage() // Limit the file size if needed
 });
+
+
+
 
 // CREATE PRODUCT ROUTE 
 
@@ -40,5 +44,9 @@ router.get('/search-product/:keyword/:page', searchProductCtrl);
 router.post('/filter-product', filterProductCtrl);
 
 router.get('/related-products/:keyword', relatedProductCtrl);
+
+router.put('/products/:pid', editProductCtrl);
+
+
 
 module.exports = router; 
