@@ -6,11 +6,11 @@ const orderSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    orderid: {
-        type: Number, 
-        required: true,
-        unique: true, 
-    },
+    // orderid: {
+    //     type: Number, 
+    //     required: true,
+    //     unique: true, 
+    // },
     cartdata: {
         type: JSON,
         required: true,

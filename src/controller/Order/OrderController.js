@@ -49,12 +49,18 @@ const getEmailContent = (orderName) => `
 </head>
 
 <body>
-    <div class="container">
-        <img src="https://i.postimg.cc/YCqfjSfs/logo.png" alt="Hasthkala Logo">
-        <h2 style="color: green;">Order Successfully Placed!</h2>
-        <p>Thank you for shopping from HarshHasthkala.</p>
-        <p>Your order will be dispatched soon.</p>
-        <p>For any queries, please contact HarshHasthkala via email at <a href="mailto:harshhasthkala@gmail.com">harshhasthkala@gmail.com</a> or via phone at <a href="tel:+917987600654">+91 79876 00654</a>.</p>
+    <div class="container" style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; font-family: 'Arial', sans-serif;">
+        <img src="https://i.postimg.cc/YCqfjSfs/logo.png" alt="Hasthkala Logo" style="max-width: 50%; height: 70px;">
+        <h2 style="color: green;">Thank You for Your Order!</h2>
+        <p>We are excited to confirm that your order ${orderName} with HarshHasthkala has been successfully placed.</p>
+        <p>Your selected items will be carefully prepared and dispatched shortly. We will notify you once your order is on its way.</p>
+        <p>If you have any questions or need further assistance, feel free to reach out to us:</p>
+        <ul>
+            <li>Email: <a href="mailto:harshhasthkala@gmail.com" style="color: green; text-decoration: none;">harshhasthkala@gmail.com</a></li>
+            <li>Phone: <a href="tel:+917987600654" style="color: green; text-decoration: none;">+91 79876 00654</a></li>
+        </ul>
+        <p>Thank you for choosing HarshHasthkala for your shopping needs!</p>
+        <p>Best regards,<br> The HarshHasthkala Team</p>
     </div>
 </body>
 
