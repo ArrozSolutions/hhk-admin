@@ -12,7 +12,7 @@ const notificationsSchema = new mongoose.Schema({
         type:String,
     },
     orderPrice:{
-        type:String,
+        type:Number,
     },
     orderId:{
         type:String,
@@ -25,7 +25,7 @@ const notificationsSchema = new mongoose.Schema({
         type:String,
     },
     phone:{
-        type:String,
+        type:Number,
     },
     email:{
         type:String,

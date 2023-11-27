@@ -6,6 +6,11 @@ const orderSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    orderid: {
+        type: Number, 
+        required: true,
+        unique: true, 
+    },
     cartdata: {
         type: JSON,
         required: true,
@@ -16,7 +21,7 @@ const orderSchema = new mongoose.Schema({
     },
     paymentmode: {
         type: String,
-        required: true
+        required: true,
     },
     status: {
         type: String,
@@ -31,11 +36,11 @@ const orderSchema = new mongoose.Schema({
     customimg: {
         type: JSON,
     },
-    personalization:{
-        type:Boolean,
+    personalization: {
+        type: Boolean,
     },
-    orderName:{
-        type:String,
+    orderName: {
+        type: String,
     },
 },
     {

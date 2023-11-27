@@ -29,12 +29,12 @@ const getEmailContent = (orderName) => `
         }
 
         img {
-            max-width: 100%;
-            height: auto;
+            max-width: 50%;
+            height: 70px;
         }
 
         h2 {
-            color: #333;
+            color: green;
         }
 
         p {
@@ -42,7 +42,7 @@ const getEmailContent = (orderName) => `
         }
 
         a {
-            color: red;
+            color: green;
             text-decoration: none;
         }
     </style>
@@ -50,11 +50,10 @@ const getEmailContent = (orderName) => `
 
 <body>
     <div class="container">
-        <img src="../../asset/logo.png" alt="HarshHasthkala Logo" width="150">
-        <h2 style="color: red;">Order Successfully Placed!</h2>
+        <img src="https://i.postimg.cc/YCqfjSfs/logo.png" alt="Hasthkala Logo">
+        <h2 style="color: green;">Order Successfully Placed!</h2>
         <p>Thank you for shopping from HarshHasthkala.</p>
-        <p>Your order with order ID ###, containing items "${orderName}" has been placed successfully.</p>
-        <p>It will be dispatched soon.</p>
+        <p>Your order will be dispatched soon.</p>
         <p>For any queries, please contact HarshHasthkala via email at <a href="mailto:harshhasthkala@gmail.com">harshhasthkala@gmail.com</a> or via phone at <a href="tel:+917987600654">+91 79876 00654</a>.</p>
     </div>
 </body>
