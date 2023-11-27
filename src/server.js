@@ -1,5 +1,13 @@
+
 const http = require("http");
 const app = require("./app");
+
+const passportSetup = require("./passport")
+const authRoute = require("./route/User/authRoute")
+
+
+
+app.use("/auth",authRoute);
 
 const PORT = process.env.PORT || 5000;
 

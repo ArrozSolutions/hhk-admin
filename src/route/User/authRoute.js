@@ -20,21 +20,23 @@ router.get("/login/failed", (req, res) => {
     });
 });
 
-router.get("/google", passport.authenticate("google", ["profile", "email"]));
 
 router.get(
     "/google/callback",
     passport.authenticate("google", {
         // successRedirect: 'https://hhkgifts.com',
-        successRedirect: 'http://localhost:3000/profile',
+        successRedirect: 'http://localhost:3000/',
 
         failureRedirect: "/login/failed",
     })
 );
 
+router.get("/google", passport.authenticate("google", ["profile", "email"]));
+
+
 router.get("/logout", (req, res) => {
     req.logout();
-    res.redirect(process.env.ORIGIN);
+    res.redirect(process.env.CLIENT_URL);
 });
 
 module.exports = router;
