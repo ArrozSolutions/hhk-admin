@@ -197,4 +197,39 @@ exports.getAllGiftBoxCtrl = async (req, res) => {
 }
 
 
+exports.editGiftboxCtrl = async (req, res) => {
+    try {
+        const { gid } = req.params;
+        const updateData = req.body;
+
+        // Check if the provided ID is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(gid)) {
+            return res.status(400).json({
+                message: "Invalid product ID format"
+            });
+        }
+
+        const updatedProduct = await ProductModel.findByIdAndUpdate(
+            gid,
+            { $set: updateData },
+            { new: true }
+        ).populate('category');
+
+        if (!updatedProduct) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+
+        return res.status(200).json({
+            product: updatedProduct,
+            message: "Product updated successfully"
+        });
+    } catch (error) {
+        console.error("Error in editProductCtrl:", error);
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+};
 

@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const shortid = require('shortid');
 const AWS = require('aws-sdk');
-const { adminCreateGiftBoxCtrl, adminUpdateGiftBoxCtrl, adminGetGiftBoxCtrl, deleteGiftBoxCtrl, getAllGiftBoxCtrl } = require("../../controller/GiftBox/GiftBoxController");
+const { adminCreateGiftBoxCtrl,editGiftboxCtrl, adminUpdateGiftBoxCtrl, adminGetGiftBoxCtrl, deleteGiftBoxCtrl, getAllGiftBoxCtrl } = require("../../controller/GiftBox/GiftBoxController");
 require('dotenv').config();
 
 const s3 = new AWS.S3({
@@ -90,5 +90,9 @@ router.post('/admin-update-giftbox', upload.array('images'), (req, res) => {
 router.post('/admin-get-giftbox',adminGetGiftBoxCtrl);
 router.post('/admin-delete-giftbox',deleteGiftBoxCtrl);
 router.get('/get-all-giftbox',getAllGiftBoxCtrl);
+
+router.get('/giftbox/:gid' , editGiftboxCtrl)
+router.post('/giftbox/:gid' , editGiftboxCtrl)
+
 
 module.exports = router; 

@@ -7,11 +7,13 @@ const shortid = require('shortid');
 const AWS = require('aws-sdk');
 require('dotenv').config();
 
-const s3 = new AWS.S3({
+AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_BUCKET_REGION
+    region: 'ap-south-1'
 });
+
+const s3 = new AWS.S3();
 
 const upload = multer({
     storage: multer.memoryStorage() // Limit the file size if needed
@@ -19,20 +21,22 @@ const upload = multer({
 
 
 router.post('/admin-create-product', upload.array('images'), (req, res) => {
-const files = req?.files
+    const files = req?.files;
 
     if (files) {
         // Create an array to store the promises for each image upload
         const uploadPromises = files.map(file => {
             const params = {
                 Bucket: process.env.AWS_BUCKET_NAME,
-                Key: `${shortid.generate()}_${file.originalname}`,
+                Key: `${shortid.generate()}_${file.originalname}`,  // Fixed the placement of backticks
                 Body: file.buffer,
                 ACL: 'public-read' // Optional: Set the desired access control level
             };
 
             return s3.upload(params).promise();
         });
+
+        AWS.config.logger = console; // Move it outside of the map function
 
         // Execute all upload promises
         Promise.all(uploadPromises)
@@ -47,14 +51,47 @@ const files = req?.files
                 console.error('Error uploading images:', error);
                 res.status(500).json({ error: 'Internal Server Error' });
             });
-    }else{
-        adminCreateProductCtrl(req,res,null);
+    } else {
+        adminCreateProductCtrl(req, res, null);
     }
 });
 
 
 
 // UPDATE PRODUCT ROUTE 
+// router.post('/admin-create-product', upload.array('images'), (req, res) => {
+//     const files = req?.files;
+
+//     if (files) {
+//         // Processing each file using Promise.all
+//         const uploadPromises = files.map(file => {
+//             const params = {
+//                 Bucket: process.env.AWS_BUCKET_NAME,
+//                 Key: ${shortid.generate()}_${file.originalname},
+//                 Body: file.buffer,
+//                 ACL: 'public-read' // Optional: Set the desired access control level
+//             };
+//             return s3.upload(params).promise();
+//         });
+
+//         // Execute all upload promises
+//         Promise.all(uploadPromises)
+//             .then(uploadedImages => {
+//                 // Create an array of the uploaded image URLs
+//                 const imageUrls = uploadedImages.map(uploadedImage => uploadedImage.Location);
+
+//                 // Call the createProduct function with the imageUrls
+//                 adminCreateProductCtrl(req, res, imageUrls);
+//             })
+//             .catch(error => {
+//                 console.error('Error uploading images:', error);
+//                 res.status(500).json({ error: 'Internal Server Error' });
+//             });
+//     } else {
+//         // If no files are provided, call the function with null
+//         adminCreateProductCtrl(req, res, null);
+//     }
+// });
 
 router.post('/admin-update-product', upload.array('images'), (req, res) => {
     const files = req?.files;
@@ -64,7 +101,7 @@ router.post('/admin-update-product', upload.array('images'), (req, res) => {
         const uploadPromises = files.map(file => {
             const params = {
                 Bucket: process.env.AWS_BUCKET_NAME,
-                Key: `${shortid.generate()}_${file.originalname}`,
+                Key: `${shortid.generate()}_${file.originalname}`, // Use backticks for template literals
                 Body: file.buffer,
                 ACL: 'public-read' // Optional: Set the desired access control level
             };
@@ -85,10 +122,12 @@ router.post('/admin-update-product', upload.array('images'), (req, res) => {
                 console.error('Error uploading images:', error);
                 res.status(500).json({ error: 'Internal Server Error' });
             });
-    }else{
-        adminUpdateProductCtrl(req,res,null);
+    } else {
+        adminUpdateProductCtrl(req, res, null);
     }
 });
+
+
 
 
 router.post('/admin-create-category', upload.array('images'), (req, res) => {
@@ -98,7 +137,7 @@ router.post('/admin-create-category', upload.array('images'), (req, res) => {
     const uploadPromises = files.map(file => {
         const params = {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `${shortid.generate()}_${file.originalname}`,
+            Key: `${shortid.generate()}_${file.originalname}`, // Use backticks for template literals
             Body: file.buffer,
             ACL: 'public-read' // Optional: Set the desired access control level
         };
@@ -119,6 +158,10 @@ router.post('/admin-create-category', upload.array('images'), (req, res) => {
 });
 
 
+
+
+
+
 router.post('/admin-update-category', upload.array('images'), (req, res) => {
     const files = req?.files;
 
@@ -127,7 +170,7 @@ router.post('/admin-update-category', upload.array('images'), (req, res) => {
         const uploadPromises = files.map(file => {
             const params = {
                 Bucket: process.env.AWS_BUCKET_NAME,
-                Key: `${shortid.generate()}_${file.originalname}`,
+                Key: `${shortid.generate()}_${file.originalname}`, // Use backticks for template literals
                 Body: file.buffer,
                 ACL: 'public-read' // Optional: Set the desired access control level
             };
@@ -148,8 +191,8 @@ router.post('/admin-update-category', upload.array('images'), (req, res) => {
                 console.error('Error uploading images:', error);
                 res.status(500).json({ error: 'Internal Server Error' });
             });
-    }else{
-        adminUpdateCategoryCtrl(req,res,null);
+    } else {
+        adminUpdateCategoryCtrl(req, res, null);
     }
 });
 
@@ -182,15 +225,18 @@ router.post('/contact-us-mail',contactUsMailCtrl);
 router.post('/change-status',changeStatusCtrl);
 
 router.post('/update-admin',updateAdminCtrl);
+
+
+
 router.post('/update-admin-avatar', upload.array('images'), (req, res) => {
     const files = req?.files;
-    console.log(files,'files');
+    console.log(files, 'files');
     if (files) {
         // Create an array to store the promises for each image upload
         const uploadPromises = files.map(file => {
             const params = {
                 Bucket: process.env.AWS_BUCKET_NAME,
-                Key: `${shortid.generate()}_${file.originalname}`,
+                Key: `${shortid.generate()}_${file.originalname}`, // Use backticks for template literals
                 Body: file.buffer,
                 ACL: 'public-read' // Optional: Set the desired access control level
             };
@@ -209,8 +255,8 @@ router.post('/update-admin-avatar', upload.array('images'), (req, res) => {
                 console.error('Error uploading images:', error);
                 res.status(500).json({ error: 'Internal Server Error' });
             });
-    }else{
-        updateAdminAvatarCtrl(req,res,null);
+    } else {
+        updateAdminAvatarCtrl(req, res, null);
     }
 });
 
@@ -218,4 +264,4 @@ router.get('/admin-notifications',getAdminNotifications);
 router.post('/admin-delete-notifications',AdminDeleteNotificationCtrl);
 
 
-module.exports = router; 
+module.exports = router;

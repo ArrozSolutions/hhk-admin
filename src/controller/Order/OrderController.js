@@ -3,6 +3,8 @@ const Notifications = require("../../models/Notifications/Notifications");
 const Order = require("../../models/Order/OrderModel");
 const User = require("../../models/User/UserModel");
 const sendEmail = require('../../utils/SendMail');
+const uuid = require('uuid'); // Import the uuid library
+
 
 const getEmailContent = (orderName) => `
 <!DOCTYPE html>
@@ -69,6 +71,9 @@ const getEmailContent = (orderName) => `
 
 exports.createOrderCtrl = async (req, res) => {
     try {
+
+        const generatedOrderId = uuid.v4();
+
         var userUpdated = false;
         const {
             uid,
@@ -81,6 +86,7 @@ exports.createOrderCtrl = async (req, res) => {
 
         if (uid == null) {
             User.create({
+                
                 fullname: req?.body?.fullname,
                 email: req?.body?.email,
                 phone: req?.body?.phone,
@@ -92,6 +98,8 @@ exports.createOrderCtrl = async (req, res) => {
                 usertype: 'complete',
             }).then((userCreated) => {
                 Order.create({
+                    orderid: generatedOrderId,
+
                     uid: userCreated?._id,
                     cartdata,
                     status,
@@ -99,6 +107,8 @@ exports.createOrderCtrl = async (req, res) => {
                     totalprice
                 }).then(async (order) => {
                     Notifications.create({
+                        orderid: generatedOrderId,
+
                         uid: userCreated?._id,
                         orderName: req?.body?.orderName,
                         orderPrice: totalprice,
@@ -165,6 +175,8 @@ exports.createOrderCtrl = async (req, res) => {
                 totalprice
             }).then(async (order) => {
                 Notifications.create({
+                    orderid: generatedOrderId,
+
                     uid,
                     orderName: req?.body?.orderName,
                     orderPrice: totalprice,
@@ -240,6 +252,8 @@ exports.createPersonalizedOrderCtrl = async (req, res, imageUrls, cartdata, uid)
             }).then((userCreated) => {
                 console.log(userCreated?._id, 'uid2')
                 Order.create({
+                    orderid: generatedOrderId,
+
                     uid: userCreated?._id,
                     cartdata,
                     status,
@@ -322,6 +336,8 @@ exports.createPersonalizedOrderCtrl = async (req, res, imageUrls, cartdata, uid)
                 customimg: customImages,
             }).then((order) => {
                 Notifications.create({
+                    orderid: generatedOrderId,
+
                     uid: uid,
                     orderName: req?.body?.orderName,
                     orderPrice: totalprice,

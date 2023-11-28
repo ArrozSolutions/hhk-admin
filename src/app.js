@@ -26,6 +26,7 @@ const giftCardRoutes = require('./route/GiftCards/GiftCardRoute');
 const notificationRoutes = require('./route/Notifications/Notifications');
 const homecategoryRoutes = require('./route/HomeCategory/HomeCategory');
 
+// const shiprocketRoutes = require('./route/shiprocket/shiprocket');
 
 
 //dotenv
@@ -80,6 +81,7 @@ app.use("/api",homecategoryRoutes);
 app.use("/api",notificationRoutes);
 app.use("/auth",authRoutes);
 
+// app.use('/shiprocket', shiprocketRoutes);
 
 
 module.exports = app;

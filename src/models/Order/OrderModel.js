@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
+
+    orderid: {
+        type: String,
+        required: true,
+        unique: true, 
+    },
     uid: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
-    // orderid: {
-    //     type: Number, 
-    //     required: true,
-    //     unique: true, 
-    // },
     cartdata: {
         type: JSON,
         required: true,

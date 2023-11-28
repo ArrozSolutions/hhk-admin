@@ -7,6 +7,9 @@ const Category = require("../../models/Category/CategoryModel");
 const sendEmail = require('../../utils/SendMail');
 const Notifications = require("../../models/Notifications/Notifications");
 
+const uuid = require('uuid'); 
+
+
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 exports.adminCreateProductCtrl = async (req, res, imageUrls) => {

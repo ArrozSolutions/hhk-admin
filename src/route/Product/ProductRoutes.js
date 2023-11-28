@@ -45,12 +45,10 @@ router.post('/filter-product', filterProductCtrl);
 
 router.get('/related-products/:keyword', relatedProductCtrl);
 
-
 router.get('/products/:pid', editProductCtrl);
 
 router.put('/products/:pid', editProductCtrl);
-
-
+router.post('/products/:pid', editProductCtrl);
 
 
 module.exports = router; 
