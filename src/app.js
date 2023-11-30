@@ -6,7 +6,11 @@ const dotenv = require("dotenv");
 const dbConnect = require("./config/db/dbConnect");
 const passport = require('passport');
 const cookieSession = require("cookie-session");
-const passportStrategy = require('./passport');
+const passportStrategy = require('./passport');const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
+
+
 
 //ROUTES
 const authRoutes = require('./route/User/authRoute');
@@ -50,11 +54,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(upload.single('imageFile'));
 //cors
 app.use(
 	cors({
 		// origin: ['https://admin.hhkgifts.com','https://hhkgifts.com'],
-        origin:'http://localhost:3000',
+        origin: ['http://localhost:3002', 'http://localhost:3001', 'http://localhost:3000'],
 		methods: "GET,POST,PUT,DELETE",
 		credentials: true,
 	})

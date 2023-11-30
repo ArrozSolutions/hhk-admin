@@ -1,5 +1,5 @@
 const express = require("express");
-const { createProductCtrl,editProductCtrl, updateProductCtrl, getProductCtrl, singleProductCtrl, productPhotoCtrl, deleteProductCtrl, getNewProductsCtrl, searchProductCtrl, filterProductCtrl, getTrendingProductsCtrl, relatedProductCtrl} = require("../../controller/Product/ProductController");
+const { createProductCtrl,editProductCtrl, updateProductCtrl, getProduct, getProductCtrl, singleProductCtrl, productPhotoCtrl, deleteProductCtrl, getNewProductsCtrl, searchProductCtrl, filterProductCtrl, getTrendingProductsCtrl, relatedProductCtrl} = require("../../controller/Product/ProductController");
 const router = express.Router();
 const multer = require('multer');
 const shortid = require('shortid');
@@ -45,10 +45,9 @@ router.post('/filter-product', filterProductCtrl);
 
 router.get('/related-products/:keyword', relatedProductCtrl);
 
-router.get('/products/:pid', editProductCtrl);
-
+router.get('/products/:pid', getProduct);
 router.put('/products/:pid', editProductCtrl);
-router.post('/products/:pid', editProductCtrl);
+// router.post('/products/:pid', editProductCtrl);
 
 
 module.exports = router; 

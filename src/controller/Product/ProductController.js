@@ -21,6 +21,7 @@ exports.editProductCtrl = async (req, res) => {
     try {
         const { pid } = req.params;
         const updateData = req.body;
+        console.log(req.body,"lkhlkh");
 
         // Check if the provided ID is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(pid)) {
@@ -34,7 +35,7 @@ exports.editProductCtrl = async (req, res) => {
             { $set: updateData },
             { new: true }
         ).populate('category');
-
+            console.log(updatedProduct,"lksjbfsdk,jmhfb");
         if (!updatedProduct) {
             return res.status(404).json({
                 message: "Product not found"
@@ -53,6 +54,38 @@ exports.editProductCtrl = async (req, res) => {
     }
 };
 
+exports.getProduct = async (req, res) => {
+    try {
+        const { pid } = req.params;
+
+        // Check if the provided ID is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(pid)) {
+            return res.status(400).json({
+                message: "Invalid product ID format"
+            });
+        }
+
+        const getProduct = await ProductModel.findById(
+            pid
+        ).populate('category');
+            // console.log(updatedProduct,"lksjbfsdk,jmhfb");
+        if (!getProduct) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+
+        return res.status(200).json({
+            product: getProduct,
+            message: "Product fetched successfully"
+        });
+    } catch (error) {
+        console.error("Error in get products:", error);
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+};
 
 
 exports.getTrendingProductsCtrl = async (req, res) => {
